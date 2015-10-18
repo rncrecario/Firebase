@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+  <head>
+    <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+    <link rel='stylesheet' type='text/css' href='/resources/tutorial/css/example.css'>
+	
+	<link rel="stylesheet" href="mdl/material.min.css">
+	<script src="mdl/material.min.js"></script>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">	
+	
+  </head>
+  <body>
+	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+	  <header class="mdl-layout__header">
+		<div class="mdl-layout__header-row">
+		  <!-- Title -->
+		  <span class="mdl-layout-title">GDG Dev Fest 2015</span>
+		  <!-- Add spacer, to align navigation to the right -->
+		  <div class="mdl-layout-spacer"></div>
+		  <!-- Navigation. We hide it in small screens. -->
+		  <nav class="mdl-navigation mdl-layout--large-screen-only">
+			<a class="mdl-navigation__link" href="">Home</a>
+			<a class="mdl-navigation__link" href="">Current News</a>
+			<a class="mdl-navigation__link" href="">Previous Events</a>
+			<a class="mdl-navigation__link" href="">Contact Us</a>
+		  </nav>
+		</div>
+	  </header>
+	  <div class="mdl-layout__drawer">
+		<span class="mdl-layout-title">GDG Dev Fest 2015</span>
+		<nav class="mdl-navigation">
+		  <a class="mdl-navigation__link" href="">Home</a>
+		  <a class="mdl-navigation__link" href="">GDG Dev Fest 2015</a>
+		  <a class="mdl-navigation__link" href="">GDG Dev Fest 2014</a>
+		  <a class="mdl-navigation__link" href="">GDG Dev Fest 2013</a>
+		</nav>
+	</div>
+  
+  
+  
+  
+  
+ 		<div class="demo-card-wide mdl-card mdl-shadow--2dp" style="margin: 10% height: 500px;">
+		  <div class="mdl-card__title">
+			<h2 class="mdl-card__title-text">Let's Chat!</h2>
+		  </div>
+		  <div class="mdl-card__supporting-text">
+		<div id='messagesDiv'></div>
+		
+		<form action="#">
+		  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+			<input class="mdl-textfield__input" type="text" id="nameInput" />
+			<label class="mdl-textfield__label" for="name">Name</label>
+		  </div>
+		  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+			<input class="mdl-textfield__input" type="text" id="messageInput" />
+			<label class="mdl-textfield__label" for="message">Message (then hit enter)</label>
+		  </div>	  
+		</form>	
+
+  
+  
+  
+      
+	<script>
+      //var myDataRef = new Firebase('https://fiq0nv5rvzg.firebaseio-demo.com/');
+      var myDataRef = new Firebase('https://vivid-fire-6164.firebaseio.com/');
+      $('#messageInput').keypress(function (e) {
+        if (e.keyCode == 13) {
+          var name = $('#nameInput').val();
+          var text = $('#messageInput').val();
+		  var mydate = (new Date()).toString();
+          myDataRef.push({name: name, text: text, date: mydate});
+          $('#messageInput').val('');
+        }
+      });
+      myDataRef.on('child_added', function(snapshot) {
+        var message = snapshot.val();
+        displayChatMessage(message.name, message.text);
+      });
+      function displayChatMessage(name, text) {
+        $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#messagesDiv'));
+        $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
+      };
+    </script>
+  </body>
+</html>
